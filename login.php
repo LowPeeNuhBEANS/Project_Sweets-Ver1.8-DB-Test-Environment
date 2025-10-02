@@ -1,25 +1,39 @@
 <?php
 session_start();
-
-// Simple login system for admin panel
-$valid_username = "admin";
-$valid_password = "treatx123"; // Change this to a secure password
+require_once 'db_connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    
-    if ($username === $valid_username && $password === $valid_password) {
-        $_SESSION['admin_logged_in'] = true;
-        header('Location: admin.php');
-        exit;
+
+    // Prepare and execute query to find user
+    $stmt = $conn->prepare("SELECT id, username, password_hash, role FROM users WHERE username = ? AND is_active = 1");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+        if (password_verify($password, $user['password_hash']) && $user['role'] === 'admin') {
+            // Successful login for admin
+            $_SESSION['logged_in'] = true;
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
+            header('Location: admin.php');
+            exit;
+        } else {
+            $error = "Invalid username or password, or insufficient privileges";
+        }
     } else {
         $error = "Invalid username or password";
     }
+
+    $stmt->close();
 }
 
 // Check if already logged in
-if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
     header('Location: admin.php');
     exit;
 }

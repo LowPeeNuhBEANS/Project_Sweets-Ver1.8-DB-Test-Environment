@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 
 // Create database if it doesn't exist
 $createDbSql = "CREATE DATABASE IF NOT EXISTS $dbname";
-if ($conn->query($createDbSql) {
+if ($conn->query($createDbSql)) { // <-- FIXED: added missing parenthesis
     // Select the database
     $conn->select_db($dbname);
     
@@ -40,4 +40,3 @@ if ($conn->query($createDbSql) {
     die("Error creating database: " . $conn->error);
 }
 ?>
-    

@@ -668,7 +668,7 @@ body.dark-mode .learn-more-btn,
 body.dark-mode .order-form button,
 body.dark-mode .quantity-control button,
 body.dark-mode .newsletter button {
-    background: linear-gradient(45deg, #b35a4a, #6b2a26);
+    background: linear-gradient(45deg, #b35a4a, #6b2a4a);
     color: #f6e0b3;
     box-shadow: 0 4px 6px rgba(179, 90, 74, 0.3);
 }
@@ -677,7 +677,7 @@ body.dark-mode .learn-more-btn:hover,
 body.dark-mode .order-form button:hover,
 body.dark-mode .quantity-control button:hover,
 body.dark-mode .newsletter button:hover {
-    background: linear-gradient(45deg, #6b2a26, #b35a4a);
+    background: linear-gradient(45deg, #6b2a4a, #b35a4a);
     box-shadow: 0 6px 10px rgba(246, 224, 179, 0.15);
 }
 
@@ -713,12 +713,12 @@ body.dark-mode footer {
 
 body.dark-mode .modal-content {
     background-color: #f9f1d1;
-    color: #6b2a26;
+    color: #6b2a4a;
     border: 1px solid #b35a4a;
 }
 
 body.dark-mode #modal-close {
-    color: #6b2a26;
+    color: #6b2a4a;
 }
 
 body.dark-mode #modal-close:hover {
@@ -726,7 +726,7 @@ body.dark-mode #modal-close:hover {
 }
 
 body.dark-mode #back-to-top {
-    background: linear-gradient(45deg, #b35a4a, #6b2a26);
+    background: linear-gradient(45deg, #b35a4a, #6b2a4a);
     color: #f6e0b3;
     box-shadow: 0 6px 12px rgba(179, 90, 74, 0.1);
 }
@@ -1033,4 +1033,39 @@ body.dark-mode .new-pastries {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Add to pastry_business.css */
+.form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.2rem;
+}
+
+.quantity-row {
+    align-items: center;
+}
+
+.price-display {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 1rem 0;
+}
+
+.main-btn {
+    background: linear-gradient(90deg, #ff8c42, #ff3c6f);
+    color: #fff;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(255,60,111,0.15);
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.main-btn:hover {
+    background: linear-gradient(90deg, #ff3c6f, #ff8c42);
+    box-shadow: 0 6px 18px rgba(255,60,111,0.25);
 }

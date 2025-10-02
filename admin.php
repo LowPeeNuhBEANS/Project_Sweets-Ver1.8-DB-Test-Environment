@@ -2,7 +2,7 @@
 session_start();
 
 // Check if user is logged in
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header('Location: login.php');
     exit;
 }
@@ -28,27 +28,30 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
         </nav>
     </header>
 
-    <section id="view-orders">
-        <h2>View Orders</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Pastry</th>
-                    <th>Quantity</th>
-                    <th>Pickup Date</th>
-                    <th>Total Price</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="order-list">
-                <!-- Orders will be populated here from the database -->
-            </tbody>
-        </table>
+    <!-- Modernized Orders Table -->
+    <section id="view-orders" class="admin-section">
+        <h2><i class="fas fa-clipboard-list"></i> View Orders</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Pastry</th>
+                        <th>Quantity</th>
+                        <th>Pickup Date</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="order-list">
+                    <!-- Orders will be populated here from the database -->
+                </tbody>
+            </table>
+        </div>
     </section>
 
     <section id="manage-orders">

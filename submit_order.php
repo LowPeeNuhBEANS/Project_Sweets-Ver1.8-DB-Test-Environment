@@ -3,34 +3,38 @@ include 'db_connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form data
-    $name = $conn->real_escape_string($_POST['name']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $phone = $conn->real_escape_string($_POST['phone']);
-    $address = $conn->real_escape_string($_POST['address']);
-    $pastry = $conn->real_escape_string($_POST['Mochi']);
+    $customer_name = $conn->real_escape_string($_POST['name']);
+    $customer_email = $conn->real_escape_string($_POST['email']);
+    $customer_phone = $conn->real_escape_string($_POST['phone']);
+    $pickup_address = $conn->real_escape_string($_POST['address']);
+    $pastry_name = $conn->real_escape_string($_POST['Mochi']);
     $quantity = intval($_POST['quantity']);
     $pickup_date = $conn->real_escape_string($_POST['pickup-date']);
-    
-    // Calculate total price based on pastry type
-    $price_per_box = 150; // Default price
-    
-    // Pricing logic matching the frontend JavaScript
-    if ($pastry === "Berry Blush Mochi" || $pastry === "Berry XD Mochi" || 
-        $pastry === "Cookie Cloud Mochi" || $pastry === "Sunny Munch Mochi") {
-        $price_per_box = 50; // Individual mochi varieties
-    } elseif ($pastry === "Assorted Mochi" || $pastry === "Box of Mini Donuts") {
-        $price_per_box = 150; // Assorted mochi and mini donuts
+
+    // Look up pastry_id from pastries table
+    $pastry_stmt = $conn->prepare("SELECT id, price_per_box FROM pastries WHERE name = ?");
+    $pastry_stmt->bind_param("s", $pastry_name);
+    $pastry_stmt->execute();
+    $pastry_result = $pastry_stmt->get_result();
+
+    if ($pastry_result->num_rows === 1) {
+        $pastry_data = $pastry_result->fetch_assoc();
+        $pastry_id = $pastry_data['id'];
+        $price_per_box = $pastry_data['price_per_box'];
     } else {
-        $price_per_box = 0; // Coming soon
+        echo json_encode(["success" => false, "message" => "Invalid pastry selection"]);
+        exit;
     }
-    
+
+    $pastry_stmt->close();
+
     $total_price = $quantity * $price_per_box;
-    
+
     // Insert order into database
-    $sql = "INSERT INTO orders (name, email, phone, address, pastry, quantity, pickup_date, total_price)
-            VALUES ('$name', '$email', '$phone', '$address', '$pastry', $quantity, '$pickup_date', $total_price)";
+    $sql = "INSERT INTO orders (customer_name, customer_email, customer_phone, pickup_address, pastry_id, quantity, pickup_date, total_price)
+            VALUES ('$customer_name', '$customer_email', '$customer_phone', '$pickup_address', $pastry_id, $quantity, '$pickup_date', $total_price)";
     
-    if ($conn->query($sql) {
+    if ($conn->query($sql)) {
         // Send confirmation email (optional)
         $to = $email;
         $subject = "Order Confirmation - Treatx' Pastries";
